@@ -5,34 +5,57 @@ allow the user to claim each specific job while staying on this page.
 can only designate one job at a time.
 can mark a job as complete then move on to the next job*@
 
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+
 @{
+    ViewData["Title"] = "Log In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="text-center">
     <h3>Our Current Jobs</h3>
     @Html.ActionLink("Add a new job", "Create")
 </div>
 @foreach (var Job in Model)
 {
-    <ul>
-        <li>@Job.Title</li>
-        <ul>
-            <li>@Job.Description</li>
-        </ul>
+
+        <h5>@Job.Title</h5>
+        <li>@Job.Description</li>
+   
         @if (Job.Worker == null)
         {
-        <li class="btn">This job is unclaimed. @Html.ActionLink("Claim This Job", "Claim", new { @text = @Job.Title, id = Job.JobId })</li>
+        <p>This job is unclaimed.</p>
+        <form action="Claim" class="new-claim">
+            <input type="hidden" value="@Job.JobId" name="id" />
+            <button type="submit">Claim this job</button>
+        </form>
+
         }
         else
         {
             <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
 
         }
-    </ul>
+
 
 
     <hr />
 }
+<div class="confirm-claim"></div>
 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.new-claim').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                data: $(this).serialize(),
+                url: '@Url.Action("Claim")',
+                success: function (result) {
+                    $('.confirm-claim').html(result);
+                }
+            });
+        });
+    });
+</script>
