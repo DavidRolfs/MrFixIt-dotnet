@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MrFixIt.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
+//make change log in to only require on letter
 namespace MrFixIt
 {
     public class Startup
