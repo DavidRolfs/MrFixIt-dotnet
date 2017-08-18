@@ -20,14 +20,29 @@
 
         @foreach (var Job in Model.Jobs)
         {
-            @if (Job.Completed == false)
+            @if (Job.Pending == false && Job.Completed == false)
             {
-                <form action="Complete" class="complete">
+                <form action="Pending" class="pending">
                     <input type="hidden" value="@Job.JobId" name="id" />
-                    <button type="submit">Complete @Job.Title</button>
+                    <button type="submit">Make @Job.Title Active</button>
                 </form>
             }
         }
+
+        <h2>Active Jobs</h2>
+        @foreach (var Job in Model.Jobs)
+        {
+            @if (Job.Pending == true)
+            {
+                {
+                    <form action="Complete" class="complete">
+                        <input type="hidden" value="@Job.JobId" name="id" />
+                        <button type="submit">Complete @Job.Title</button>
+                    </form>
+                }
+            }
+        }
+       
         <h2>Completed Jobs</h2>
         @foreach (var Job in Model.Jobs)
         {
@@ -53,6 +68,23 @@
                 url: '@Url.Action("Complete", "Jobs")',
                 success: function (result) {
                     $('.confirm-completed').html(result);
+                }
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.pending').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: $(this).serialize(),
+                url: '@Url.Action("Pending", "Jobs")',
+                success: function (result) {
+                    $('.confirm-pending').html(result);
                 }
             });
         });

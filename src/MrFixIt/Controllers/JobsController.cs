@@ -53,6 +53,16 @@ namespace MrFixIt.Controllers
         {
             Job thisJob = db.Jobs.FirstOrDefault(job => job.JobId == id);
             thisJob.Completed = true;
+            thisJob.Pending = false;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Pending(int id)
+        {
+            Job thisJob = db.Jobs.FirstOrDefault(job => job.JobId == id);
+            thisJob.Pending = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
