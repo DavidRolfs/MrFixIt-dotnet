@@ -14,19 +14,20 @@ can mark a job as complete then move on to the next job*@
     <h3>Our Current Jobs</h3>
     @Html.ActionLink("Add a new job", "Create")
 </div>
-@foreach (var Job in Model)
-{
+<div class="scroll">
+    @foreach (var Job in Model)
+    {
 
         <h5>@Job.Title</h5>
         <li>@Job.Description</li>
-   
+
         @if (Job.Worker == null)
         {
-        <p>This job is unclaimed.</p>
-        <form action="Claim" class="new-claim">
-            <input type="hidden" value="@Job.JobId" name="id" />
-            <button type="submit">Claim this job</button>
-        </form>
+            <p>This job is unclaimed.</p>
+            <form action="Claim" class="new-claim">
+                <input type="hidden" value="@Job.JobId" name="id" />
+                <button type="submit">Claim this job</button>
+            </form>
 
         }
         else
@@ -37,24 +38,25 @@ can mark a job as complete then move on to the next job*@
 
 
 
-    <hr />
-}
-<div class="confirm-claim"></div>
+        <hr />
+    }
+    </div>
+    <div class="confirm-claim"></div>
 
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.new-claim').click(function (event) {
-            event.preventDefault();
-            $.ajax({
-                type: 'GET',
-                dataType: 'html',
-                data: $(this).serialize(),
-                url: '@Url.Action("Claim")',
-                success: function (result) {
-                    $('.confirm-claim').html(result);
-                }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.new-claim').click(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'html',
+                    data: $(this).serialize(),
+                    url: '@Url.Action("Claim")',
+                    success: function (result) {
+                        $('.confirm-claim').html(result);
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
