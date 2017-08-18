@@ -1,21 +1,12 @@
 ﻿@*Page displays users claimed jobs, may make change that shows what job they are curently working on*@
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 
 @if (User.Identity.IsAuthenticated)
 {
 
     <div class="text-center">
-        <h4>Hello Worker @Model.FirstName @Model.LastName. You are Logged In</h4>
-        <h3>Your Current Jobs:</h3>
-        @foreach (var Job in Model.Jobs)
-        {
-            <h5>@Job.Title</h5>
 
-        }
+        <h4>Hello Worker @Model.FirstName @Model.LastName. You are Logged In</h4>
+
         @if (Model.Avaliable)
         {
             <h2>Please @Html.ActionLink("select a job", "Index", "Jobs").</h2>
@@ -24,5 +15,46 @@
         {
             <p>You are already assigned to a job.</p>
         }
+
+        <h3>Your Claimed Jobs:</h3>
+
+        @foreach (var Job in Model.Jobs)
+        {
+            @if (Job.Completed == false)
+            {
+                <form action="Complete" class="complete">
+                    <input type="hidden" value="@Job.JobId" name="id" />
+                    <button type="submit">Complete @Job.Title</button>
+                </form>
+            }
+        }
+        <h2>Completed Jobs</h2>
+        @foreach (var Job in Model.Jobs)
+        {
+            @if (Job.Completed == true)
+            {
+                <li>@Job.Title</li>
+            }
+        }
     </div>
 }
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.complete').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: $(this).serialize(),
+                url: '@Url.Action("Complete", "Jobs")',
+                success: function (result) {
+                    $('.confirm-completed').html(result);
+                }
+            });
+        });
+    });
+</script>
