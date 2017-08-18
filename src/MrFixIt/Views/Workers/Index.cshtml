@@ -1,5 +1,9 @@
 ﻿@*Page displays users claimed jobs, may make change that shows what job they are curently working on*@
 
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 @if (User.Identity.IsAuthenticated)
 {
 
@@ -53,8 +57,6 @@
         }
     </div>
 }
-
-
 
 
 <script type="text/javascript">
