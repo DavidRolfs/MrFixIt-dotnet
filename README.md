@@ -26,7 +26,7 @@ rolfs97@yahoo.com
 
 ## Technologies Used
 
-C#, HTML, CSS, Bootstrap, Visual Studios, .Net, SQL
+C#, HTML, CSS, Bootstrap, Visual Studios, .Net, SMSS, Ajax
 ### License
 
 MIT
